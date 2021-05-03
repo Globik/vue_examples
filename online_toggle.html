@@ -1,0 +1,51 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="shortcut icon" type="image/ico" href="images/w4.png">	
+<title>online toggle</title>
+<script src="js/vue.global.js"></script>
+<style>
+.onlineMaker{
+	width: 10px; 
+	height: 10px;
+	}
+.onlineMaker.online{
+	background: green;
+	}
+.onlineMaker.offline{
+	background: red;
+	}
+</style>
+</head>
+<body>
+<h3>online toggle</h3>
+<div id="app">
+<div>
+<div :class="{onlineMaker: true, online: status, offline: !status}"></div>
+<p>user is {{ (status) ? 'online' : 'offline'}}</p>
+<div><input type="checkbox" v-model="status">toggle status</div>
+</div>
+</div>
+<script>
+var demo = Vue.createApp({
+	data(){
+		return {flag: null}
+		},
+		computed: {
+			status: {
+			get(){
+				console.log('get')
+				return (this.flag === null) ? true: this.flag;
+			},
+			set(val){
+				console.log('set: ', val)
+				this.flag = val
+			}
+		}
+		}
+		})
+demo.mount('#app');
+</script>
+</body></html>

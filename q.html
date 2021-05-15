@@ -1,0 +1,49 @@
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes"><link rel="shortcut icon" type="image/ico" href="images/w4.png">	
+<title>todolist_1</title>
+<script src="js/vue.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+<style>
+</style>
+</head>
+<body>
+<h3>todolist_1</h3>
+<div id="app">
+<p>
+ask a yes/no question:
+<input v-model="question" />
+</p>
+<p>{{ answer }}</p>
+</div>
+<script>
+const demo = Vue.createApp({
+	data() {
+		return { 
+			question: '',
+			answer: 'questions usually contain a question mark'
+			}
+		},
+		watch: {
+			question(n, o) {
+				if(n.indexOf('?') > -1)
+				{
+					this.getAnswer()
+					}
+				}
+			},
+			methods: {
+				getAnswer() {
+					this.answer = 'thinking...'
+					alert(1)
+					axios.get('https://yesno.wtf/api')
+					.then(r => {
+						this.answer = r.data.answer
+						})
+						.catch(err => {
+							this.answer = 'error1 could not reach the api ' + err
+							})
+					}
+				}
+	}).mount('#app')
+</script>
+</body></html>

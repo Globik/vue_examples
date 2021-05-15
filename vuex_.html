@@ -1,0 +1,158 @@
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes"><link rel="shortcut icon" type="image/ico" href="images/w4.png">	
+<title>vuex_</title>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+<!-- <script src="js/vue.global.js"></script> -->
+<script src="https://unpkg.com/vuex"></script>
+
+<style>
+</style>
+</head>
+<body>
+<h3>vuex_</h3>
+<div id="app">
+<Parent/>
+</div>
+<script>
+	
+const childb = {
+	namespaced: true,
+	state: {
+		score: 3
+		},
+		getters: {
+			score(state){
+				return state.score
+				}
+			},
+			mutations: {
+				increment(state, step){
+					state.score+= step
+					}
+				},
+				actions: {
+					incrementScore: ({commit}, delay)=>{
+						setTimeout(()=>{
+							commit('increment', 6)
+							}, delay)
+						}
+					}
+	}
+	const childa = {
+		namespaced: true,
+		state: {
+			score: 0
+			},
+			getters: {
+				score(state){
+					return state.score
+					}
+				},
+				mutations: {
+					increment(state, step){
+						state.score+=step
+						}
+					},
+					actions: {
+						incrementScore: ({commit}, delay)=> {
+							
+								setTimeout(()=>{
+									commit('increment', 3)
+								}, delay)
+							}
+						}}
+	
+	
+//import Vuex from 'vuex';
+	const store = new Vuex.Store({
+	//const store = createStore({
+		modules: {
+			scoreBoard: childa,
+			resultBoard: childb
+			}
+		})
+		
+		Vue.component('childb', {
+			template: `<div class="child childb">
+			<h1>result: {{result}}</h1>
+			<button @click="changeResult();">change result</button>
+			</div>`,
+			computed: {
+				result(){
+					return this.$store.getters['resultBoard/score']
+					}
+				},
+				methods: {
+					changeResult(){
+						this.$store.dispatch('resultBoard/incrementScore', 3000)
+						}
+					}
+				})
+				
+				Vue.component('childa', {
+					template: `
+					<div class="child childa"><h1>Score: {{score}}</h1>
+					<button @click="changeScore()">change score</button>
+					</div>
+					`,
+					computed: {
+						score(){
+							return this.$store.getters['scoreBoard/score']
+							}
+						},
+						methods: {
+							changeScore(){
+								this.$store.dispatch('scoreBoard/incrementScore', 80)
+								}
+							}
+						
+					})
+					
+					
+					Vue.component('Parent',{
+						template: `
+						<div id="parent">
+						<childa/>
+						<childb/>
+						</div>`
+						})
+
+		
+		
+		
+	//	new Vue({el: '#app', store})
+	
+	//Vue.createApp({store}).mount('#app');
+		
+		
+		//Vue.use(store)
+		
+		
+		
+		
+		//const store = new Vuex.Store({})
+		//Vue.createApp({store}).mount('#app');
+		//Vue.use(Vuex);
+//import Vue from 'vue'
+//import Vuex from 'vuex'
+
+
+/*
+const store = new Vuex.Store({
+  state: {
+    count: 0
+  },
+  mutations: {
+    increment (state) {
+      state.count++
+    }
+  }
+})
+*/
+//Vue.use(Vuex);
+		//Vue.createApp({store}).mount('#app');
+	new	Vue({store, el: '#app'})
+		
+</script>
+</body></html>

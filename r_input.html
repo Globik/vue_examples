@@ -9,13 +9,84 @@
 <div id="app"></div>
 <script type="text/babel">
 function App(){
-	return (<h2>Fuck you!</h2>);
-	}
+	const [alert, setAlert] = React.useState(false);
+	const [itemInput, setItemInput] =  React.useState('');
+	const [list, setList] = React.useState([]);
+	const mounted = React.useRef(true);
+	
+	var data=[{dos: "banane", id: 1}, {dos: "apfel", id: 2}]
+	var id = 13;
+	function getList(){
+//data.push({id: id, dos: 'item'});
+id++;
+//setList(data);
+				//data.push({id: id, dos: 'item'});
+				//setList(data)
+		return data;
 
-	var el=<h1>hell</h1>;
-	ReactDOM.render(
-	<App />,
-	document.getElementById("app")
-	)
+		}
+
+		function setItem(item){
+			console.log("item setItem: ", item)
+id++;
+		data.push({id: id, dos: item});
+				return data;
+			}
+	
+	React.useEffect(()=>{
+		mounted.current = true;
+		if(list.length && !alert){
+			return;
+			}
+		var items =	getList();
+		console.log("ITEMS ", items)
+				if(mounted.current){
+					console.log("MOUNTED")
+					setList(items)
+				
+					}
+				
+		return ()=> mounted.current = false;
+		}, [alert, list])
+		
+		
+		 React.useEffect(()=>{
+			if(alert){
+				setTimeout(()=>{
+					if(mounted.current){
+						setAlert(false);
+				
+				}}, 1000)
+			}}, [alert]);
+			
+			
+			const handleSubmit = (e)=>{
+				e.preventDefault();
+				console.log('itemInput****************************: ', itemInput, mounted.current);
+				var suka=setItem(itemInput);
+					if(mounted.current){
+						
+					setItemInput('');
+					setAlert(true);	
+				}
+				//var datas=getList();
+			//setList(suka)
+				}
+		
+	return (
+	<div className="wrapper">
+	<h1>my grocery list</h1>
+	<ul>{list.map(it=>  <li key={it.id}>{it.dos}</li>)}
+		</ul>
+		{alert && <h2>submit successful</h2>}
+	<form onSubmit={handleSubmit}>
+	<label>
+	<p>new item</p>
+	<input type="text" onChange={event => setItemInput(event.target.value)} value={itemInput} />
+	</label><button type="submit">submit</button>
+	</form>
+	</div>);
+	}
+ReactDOM.render(<App />, document.getElementById("app"));
 </script>
 </body></html>
